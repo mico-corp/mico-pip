@@ -22,10 +22,13 @@
 from github import Github
 import os
 import sys
+from getpass import getpass
 
 class MicoPip:
     def __init__(self):
-        self.gh = Github("mico-corp", "7701def281f1c969574bcfd847fa31000d9c9531")
+        self.user = input("Github User: ")
+        self.pwd = getpass("Github password: ")
+        self.gh = Github(self.user, self.pwd )
         self.__LoadPluginList()
 
         self.pluginBuildDir = home = os.path.expanduser("~")+"/.mico/plugin_build"
@@ -50,6 +53,7 @@ class MicoPip:
         os.popen("cd " + self.pluginBuildDir+"/"+_name+"/build && make -j4").read()
         print("[75%] Installing library")
         os.popen("cd " + self.pluginBuildDir+"/"+_name+"/build && make flow_install").read()
+        os.popen("cd " + self.pluginBuildDir+"/"+_name+"/build && sudo make install").read()
         print("[100%] finished")
         
     def existPlugin(self, _name):
