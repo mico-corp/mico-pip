@@ -19,20 +19,8 @@
 ##  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ##---------------------------------------------------------------------------------------------------------------------
 
-# python3.6
-from setuptools import setup, find_packages
+sudo python3 setup.py install
 
-setup(
-    name='mico-pip',
-    version='0.1.0',
-    description='MICO package installation module',
-    url='https://github.com/mico-corp/mico-pip',
-    author='Pablo Ramon Soria',
-    author_email='pabramsor@gmail.com',
-    packages=find_packages(),
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: GNU GPL",
-        "Operating System :: OS Independent",
-    ],
-)
+python3 -m PyInstaller --onefile --icon=mico_icon.png micopip.py
+
+sudo cp dist/micopip /usr/local/bin/

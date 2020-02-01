@@ -1,2 +1,6 @@
 
 *.pyc
+build*
+dist*
+*.spec
+mico_pip.egg-info/
