@@ -21,10 +21,11 @@
 
 from github import Github
 import os
+import sys
 
 class MicoPip:
     def __init__(self):
-        self.gh = Github("mico-corp", "829e93fa1f9d57d72e1d50ceb90368a5a7510e2f")
+        self.gh = Github("mico-corp", "7701def281f1c969574bcfd847fa31000d9c9531")
         self.__LoadPluginList()
 
         self.pluginBuildDir = home = os.path.expanduser("~")+"/.mico/plugin_build"
@@ -51,7 +52,13 @@ class MicoPip:
         os.popen("cd " + self.pluginBuildDir+"/"+_name+"/build && make flow_install").read()
         print("[100%] finished")
         
-
+    def existPlugin(self, _name):
+        exist = False
+        for plugin in self.plugins:
+            if(_name == plugin.name):
+                exist = True
+                break
+        return exist
 
     def __LoadPluginList(self):
         self.plugins = []
@@ -60,8 +67,31 @@ class MicoPip:
                 self.plugins.append(plugin)
 
 
+    def help(self):
+        print("Not Enough Input arguments.")
+        print("----------------------------------------------------------------")
+        print("Use \"list\" argument to get the list of existing plugins")
+        print("\t python3 micopip list")
+        print("----------------------------------------------------------------")
+        print("Use \"install\" argument and the name of the plugin to install it")
+        print("\t python3 micopip install ros_mplugin")
+
+
 if __name__ == "__main__":
     pip = MicoPip()
 
-    pip.listPlugins()
-    pip.installPlugin("camera_wrapper_mplugin")
+    if len(sys.argv) > 1:
+        cmd = sys.argv[1]
+        if cmd == "list":
+            pip.listPlugins()
+        elif cmd == "install":
+            if len(sys.argv) > 2:
+                if(pip.existPlugin(sys.argv[2])):
+                    pip.installPlugin(sys.argv[2])
+                else:
+                    pip.help()
+            else:
+                pip.help()
+
+    else:
+        pip.help()
