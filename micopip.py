@@ -64,6 +64,23 @@ class MicoPip:
                 break
         return exist
 
+    def promptMode(self):
+        cmd = ["help"]
+        while(cmd[0] != "exit"):
+            if(cmd[0] == "help"):
+                self.help()
+            elif (cmd[0] == "list"):
+                self.listPlugins()
+            elif (cmd[0] == "install"):
+                if(cmd[1] == "all"):
+                    for plugin in self.plugins:
+                        self.installPlugin(plugin.name)
+                else:
+                    self.installPlugin(cmd[1])
+            
+            cmd = input("Introduce command: ")
+            cmd = cmd.split(" ")
+
     def __LoadPluginList(self):
         self.plugins = []
         for plugin in self.gh.get_organization("mico-corp").get_repos():
@@ -72,30 +89,15 @@ class MicoPip:
 
 
     def help(self):
-        print("Not Enough Input arguments.")
-        print("----------------------------------------------------------------")
-        print("Use \"list\" argument to get the list of existing plugins")
-        print("\t python3 micopip list")
-        print("----------------------------------------------------------------")
-        print("Use \"install\" argument and the name of the plugin to install it")
-        print("\t python3 micopip install ros_mplugin")
+        print("MICO pip (micopip) is a python based utility for installing MICO modules easily from command line.")
+        print("Following actions can be called from this prompt:")
+        print("\t - \"help\" : Show this message")
+        print("\t - \"exit\" : Exit micopip")
+        print("\t - \"list\" : list available modules that can be installed from this utility")
+        print("\t - \"install\" [module_name]: install given module. If module_name==all, install all modules")
 
 
 if __name__ == "__main__":
     pip = MicoPip()
 
-    if len(sys.argv) > 1:
-        cmd = sys.argv[1]
-        if cmd == "list":
-            pip.listPlugins()
-        elif cmd == "install":
-            if len(sys.argv) > 2:
-                if(pip.existPlugin(sys.argv[2])):
-                    pip.installPlugin(sys.argv[2])
-                else:
-                    pip.help()
-            else:
-                pip.help()
-
-    else:
-        pip.help()
+    pip.promptMode()
