@@ -24,7 +24,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mico-pip',
-    version='0.1.0',
+    version='0.1.1',
     description='MICO package installation module',
     url='https://github.com/mico-corp/mico-pip',
     author='Pablo Ramon Soria',
